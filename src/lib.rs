@@ -40,17 +40,18 @@ pub struct EmojiFormatter<'a>(pub &'a str);
 impl<'a> std::fmt::Display for EmojiFormatter<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let re = Regex::new(r":([a-zA-Z0-9_+-]+):").unwrap();
-        
-        let result = re.replace_all(self.0, |capts: &Captures| {
-            let sym = capts.at(0).unwrap();
 
-            match EMOJIS.get(sym) {
-                Some(e) => format!("{}", e),
-                None    => sym.to_string()
-            }
-        });
+        let result = re.replace_all(self.0, EmojiReplacer);
 
         write!(f, "{}", result)
     }
 }
 
+struct EmojiReplacer;
+
+impl regex::Replacer for EmojiReplacer {
+    fn replace_append(&mut self, caps: &Captures<'_>, dst: &mut String) {
+        let sym = caps.get(0).unwrap().into();
+        dst.push_str(EMOJIS.get(sym).unwrap_or(&sym));
+    }
+}

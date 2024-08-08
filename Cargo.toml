@@ -1,7 +1,7 @@
 [package]
-
 name = "emojicons"
 version = "1.0.0"
+edition = "2021"
 authors = ["Jiří Šebele <sindriava@gmail.com>"]
 
 description = "Parse :emoji: notation to unicode representation."
@@ -12,10 +12,8 @@ license = "MIT"
 build = "build.rs"
 
 [build-dependencies]
-
-phf_codegen = "0.7.10"
+phf_codegen = "0.11.2"
 
 [dependencies]
-
-phf = "0.7.10"
-regex = "0.1.58"
+phf = "0.11.2"
+regex = "1.10.6"

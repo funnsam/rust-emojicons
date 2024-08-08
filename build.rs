@@ -6,13 +6,6 @@ use std::io::{ BufWriter, Write };
 use std::path::Path;
 
 fn main() {
-    let path = Path::new(&env::var("OUT_DIR").unwrap()).join("emojis.rs");
-    let mut file = BufWriter::new(File::create(&path).unwrap());
-
-    write!(&mut file, "/// Compile time generated lookup table for emoji.\n").unwrap();
-    write!(&mut file, "/// \n").unwrap();
-    write!(&mut file, "/// Taken from [NSStringEmojize](https://github.com/diy/NSStringEmojize).\n").unwrap();
-    write!(&mut file, "pub static EMOJIS: phf::Map<&'static str, &'static str> = ").unwrap();
     let mut m = phf_codegen::Map::new();
 
     m.entry(":+1:"                              , "\"\u{01F441}\"");
@@ -879,6 +872,11 @@ fn main() {
     m.entry(":zap:"                             , "\"\u{0026A1}\"");
     m.entry(":zzz:"                             , "\"\u{01F4A4}\"");
 
-    m.build(&mut file).unwrap();
-    write!(&mut file, ";\n").unwrap();
+    let path = Path::new(&env::var("OUT_DIR").unwrap()).join("emojis.rs");
+    let mut file = BufWriter::new(File::create(&path).unwrap());
+
+    writeln!(&mut file, "/// Compile time generated lookup table for emoji.").unwrap();
+    writeln!(&mut file, "/// ").unwrap();
+    writeln!(&mut file, "/// Taken from [NSStringEmojize](https://github.com/diy/NSStringEmojize).").unwrap();
+    writeln!(&mut file, "pub static EMOJIS: phf::Map<&'static str, &'static str> = {};", m.build()).unwrap();
 }
