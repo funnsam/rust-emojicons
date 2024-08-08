@@ -1,11 +1,11 @@
 [package]
-name = "emojicons"
+name = "emojicons-2021"
 version = "1.0.0"
 edition = "2021"
-authors = ["Jiří Šebele <sindriava@gmail.com>"]
+authors = ["Jiří Šebele <sindriava@gmail.com>", "funnsam <funnsam8@gmail.com>"]
 
 description = "Parse :emoji: notation to unicode representation."
-repository = "https://github.com/jiri/rust-emojicons"
+repository = "https://github.com/funnsam/rust-emojicons"
 readme = "README.md"
 license = "MIT"
 
