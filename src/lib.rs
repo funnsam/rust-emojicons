@@ -4,6 +4,9 @@ use regex::{
     Captures,
 };
 
+#[cfg(test)]
+mod tests;
+
 /// Newtype used for substituting emoji codes for emoji
 ///
 /// Leaves the notation intact if a corresponding emoji is not found in the
@@ -24,7 +27,7 @@ struct EmojiReplacer;
 
 impl regex::Replacer for EmojiReplacer {
     fn replace_append(&mut self, caps: &Captures<'_>, dst: &mut String) {
-        let sym = caps.get(0).unwrap().into();
-        dst.push_str(emojis::get_by_shortcode(sym).map_or(sym, emojis::Emoji::as_str));
+        let sym = caps.get(1).unwrap().into();
+        dst.push_str(emojis::get_by_shortcode(sym).map_or_else(|| caps.get(0).unwrap().into(), emojis::Emoji::as_str));
     }
 }
