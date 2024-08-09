@@ -1,6 +1,6 @@
 [package]
 name = "emojicons-2021"
-version = "1.0.0"
+version = "2.0.0"
 edition = "2021"
 authors = ["Jiří Šebele <sindriava@gmail.com>", "funnsam <funnsam8@gmail.com>"]
 
@@ -9,11 +9,6 @@ repository = "https://github.com/funnsam/rust-emojicons"
 readme = "README.md"
 license = "MIT"
 
-build = "build.rs"
-
-[build-dependencies]
-phf_codegen = "0.11.2"
-
 [dependencies]
-phf = "0.11.2"
+emojis = "0.6.3"
 regex = "1.10.6"

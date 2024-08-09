@@ -1,35 +1,8 @@
-extern crate phf;
-extern crate regex;
-
 use std::fmt;
 use regex::{
     Regex,
     Captures,
 };
-
-include!(concat!(env!("OUT_DIR"), "/emojis.rs"));
-
-/// Macro for compile-time emoji lookup
-///
-/// This macro will expand to the string stored in `EMOJIS` on compile-time.
-/// This doesn't introduce any overhead, but is useful to prevent pasting of
-/// unicode into the code.
-///
-/// # Example
-///
-/// ```rust
-/// #[macro_use] extern crate emojicons;
-/// 
-/// # fn main() {
-/// assert_eq!(emoji!("cat").to_string(), "\u{01F431}");
-/// # }
-/// ```
-#[macro_export]
-macro_rules! emoji {
-    ($e: expr) => (
-        $crate::EMOJIS.get(&format!(":{}:", $e)[..]).unwrap_or(&$e);
-    )
-}
 
 /// Newtype used for substituting emoji codes for emoji
 ///
@@ -39,7 +12,7 @@ pub struct EmojiFormatter<'a>(pub &'a str);
 
 impl<'a> std::fmt::Display for EmojiFormatter<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let re = Regex::new(r":([a-zA-Z0-9_+-]+):").unwrap();
+        let re = Regex::new(r":([a-zA-Z0-9_\+\-]+):").unwrap();
 
         let result = re.replace_all(self.0, EmojiReplacer);
 
@@ -52,6 +25,6 @@ struct EmojiReplacer;
 impl regex::Replacer for EmojiReplacer {
     fn replace_append(&mut self, caps: &Captures<'_>, dst: &mut String) {
         let sym = caps.get(0).unwrap().into();
-        dst.push_str(EMOJIS.get(sym).unwrap_or(&sym));
+        dst.push_str(emojis::get_by_shortcode(sym).map_or(sym, emojis::Emoji::as_str));
     }
 }
