@@ -1,6 +1,6 @@
 [package]
 name = "emojicons-2021"
-version = "2.0.0"
+version = "2.0.1"
 edition = "2021"
 authors = ["Jiří Šebele <sindriava@gmail.com>", "funnsam <funnsam8@gmail.com>"]
 
